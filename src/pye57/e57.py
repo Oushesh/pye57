@@ -27,6 +27,10 @@ SUPPORTED_POINT_FIELDS = {
     "rowIndex": "H",
     "columnIndex": "H",
     "cartesianInvalidState": "b",
+
+    "nor:normalX": "d",
+    "nor:normalY": "d",
+    "nor:normalZ": "d",
 }
 
 
@@ -117,6 +121,7 @@ class E57:
         header = self.get_header(index)
         data = {}
         buffers = libe57.VectorSourceDestBuffer()
+        print (header.point_fields)
         for field in header.point_fields:
             np_array, buffer = self.make_buffer(field, header.point_count)
             data[field] = np_array
@@ -145,9 +150,14 @@ class E57:
                   transform=True,
                   ignore_missing_fields=False) -> Dict:
         header = self.get_header(index)
+        print (header.point_fields)
         n_points = header.point_count
 
-        fields = ["cartesianX", "cartesianY", "cartesianZ"]
+        #fields = ["cartesianX", "cartesianY", "cartesianZ",]
+        fields = ["cartesianX", "cartesianY", "cartesianZ", "nor:normalX", "nor:normalY", "nor:normalZ", "colorRed", "colorGreen", "colorBlue"]
+
+        #TODO: add all valid fields
+        '''
         if intensity:
             fields.append("intensity")
         if colors:
@@ -158,6 +168,7 @@ class E57:
             fields.append("rowIndex")
             fields.append("columnIndex")
         fields.append("cartesianInvalidState")
+        '''
 
         for field in fields[:]:
             if field not in header.point_fields:
